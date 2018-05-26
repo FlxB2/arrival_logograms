@@ -1,6 +1,6 @@
 # Arrival Logograms
 
-this python script generates logograms similar to the ones shown in the film arrival. 
+this python script generates logograms similar to the ones shown in the film "Arrival". 
 
 ![sample image](https://raw.githubusercontent.com/FlxB2/arrival_logograms/master/samples/collage.png)
 
