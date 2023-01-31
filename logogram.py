@@ -78,15 +78,15 @@ def logogram(seed, imgSize, varThickness, varCenter, nmbCirc, varRad):
 	image = image.convert('L').point(fn, mode='1')
 
 
-	image.thumbnail((512,512), Image.ANTIALIAS)
+	image.thumbnail((2048,2048), Image.ANTIALIAS)
+
 	return image
 
 def generatePNGs(nmbPics):
 	for i in range(0,nmbPics):
 		seed = random.uniform(0, i) * 1000;
 		string = "samples/" + str(i)+"hepta.png"
-		logogram(seed, (2048,2048), 10, 10, nmbCirc, (1,1)).save(string, "PNG")
-		print string + " generated"
+		logogram(seed, (2048,2048), 10, 10, 100, (1,1)).save(string, "PNG")
 
 
 if(len(sys.argv[1:]) == 1):
