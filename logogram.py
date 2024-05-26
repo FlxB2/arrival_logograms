@@ -78,7 +78,7 @@ def logogram(seed, imgSize, varThickness, varCenter, nmbCirc, varRad):
 	image = image.convert('L').point(fn, mode='1')
 
 
-	image.thumbnail((2048,2048), Image.ANTIALIAS)
+	image.thumbnail((2048,2048))
 
 	return image
 
