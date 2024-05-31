@@ -1,8 +1,6 @@
 import random
-import sys
 from random import randint
 import math
-import PIL
 from PIL import Image, ImageDraw, ImageFilter
 from tendril import Tendril
 from circularStroke import CircularStroke
@@ -38,13 +36,13 @@ def disks (draw, center, rad, nmbDisks, minAngleExtent, maxAngleExtent, size=25,
 				tendril.draw(draw)
 
 
-def logogram(seed, imgSize, varThickness, varCenter, nmbCirc, varRad):
+def logogram(imgSize, varThickness, varCenter, nmbCirc, varRad):
 
 	image = Image.new("RGB", imgSize, "white")
 	x = image.width/2
 	y = x
 	draw = ImageDraw.Draw(image)
-	rad = imgSize[0]/3
+	rad = imgSize[0]/2.5
 
 	#logogram_circle(draw, nmbCirc, (x,y), varCenter, varThickness, rad, varRad)
 	stroke = CircularStroke(nmbCirc, (x,y), varCenter, varThickness, rad, varRad)
@@ -69,14 +67,11 @@ def logogram(seed, imgSize, varThickness, varCenter, nmbCirc, varRad):
 	image = image.filter(ImageFilter.BLUR)
 	image = image.filter(ImageFilter.BLUR)
 
-
-
 	#threshold
 	thresholdValue = 200
 	image = image.convert('L')
 	fn = lambda x : 255 if x > thresholdValue else 0
 	image = image.convert('L').point(fn, mode='1')
-
 
 	image.thumbnail((2048,2048))
 
@@ -87,14 +82,3 @@ def generatePNGs(nmbPics):
 		seed = random.uniform(0, i) * 1000;
 		string = "samples/" + str(i)+"hepta.png"
 		logogram(seed, (2048,2048), 10, 10, 100, (1,1)).save(string, "PNG")
-
-
-if(len(sys.argv[1:]) == 1):
-	seed = float(sys.argv[1])
-else: 
-	seed = randint(0,10000)
-random.seed(seed)
-logogram(seed, (2048,2048), 10, 10, 100, (1,1)).show()
-#generatePNGs(20)
-
-

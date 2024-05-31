@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+
+<head>
+  <link rel="stylesheet" href="css/skeleton.css">
+  <link rel="stylesheet" href="css/normalize.css">
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.25.1/full/pyodide.js"></script>
+</head>
+
+<body>
+  <script type="text/javascript">
+    async function main() {
+      let pyodide = await loadPyodide();
+      await pyodide.loadPackage("micropip");
+      const micropip = pyodide.pyimport("micropip");
+      await micropip.install("pillow");
+      await pyodide.runPythonAsync(`
+          # absolutely cursed setup, but whatever
+          from pyodide.http import pyfetch
+          import io, base64
+
+          base_url = "https://flxb2.github.io/arrival_logograms/"
+          for i in ["logogram.py", "circularStroke.py", "tendril.py"]:
+              response = await pyfetch(base_url + i)
+              with open(i, "wb") as f:
+                  f.write(await response.bytes())
+          
+          from logogram import logogram
+
+          img = logogram((2048,2048), 10, 10, 100, (1,1))
+          image_io = io.BytesIO()
+          img.save(image_io, 'PNG')
+          imgB64 = 'data:image/png;base64,' + base64.b64encode(image_io.getvalue()).decode('UTF-8')
+      `)
+      document.getElementById("img").src = pyodide.globals.get('imgB64')
+    }
+    main();
+  </script>
+  <div class="container">
+    <div class="row">
+        <div style="text-align: center;">
+          <img id="img" style="max-width: 80%; box-sizing: border-box;" />
+        </div>
+    </div>
+    <div class="row">
+      <div style="text-align: center;">
+        <button onclick="main()">Generate</button>
+      </div>
+    </div>
+</body>
+
+</html>
